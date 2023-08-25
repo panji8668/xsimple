@@ -1,0 +1,29 @@
+name: isimple
+description: ISimple IRSX Widget
+version: 0.0.1
+homepage:
+
+environment:
+  sdk: '>=3.0.3 <4.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  rxdart: ^0.27.7
+  cached_network_image: ^3.2.3
+  loading_indicator: ^3.1.0
+  intl: ^0.18.1
+  flutter_screenutil: ^5.8.4
+  dio: ^4.0.6
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+
+  assets:
+    - packages/isimple/assets/images/error.png
