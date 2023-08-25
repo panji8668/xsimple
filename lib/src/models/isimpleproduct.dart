@@ -11,23 +11,52 @@ String isimpleProductToJson(IsimpleProductResponse data) => json.encode(data.toJ
 
 class IsimpleProductResponse {
   bool success;
-  List<IProduct> data;
+  String msg;
+  Data data;
 
   IsimpleProductResponse({
     required this.success,
+    required this.msg,
     required this.data,
   });
 
   factory IsimpleProductResponse.fromJson(Map<String, dynamic> json) => IsimpleProductResponse(
         success: json["success"],
-        data: List<IProduct>.from(json["data"].map((x) => IProduct.fromJson(x))),
+        msg: json["msg"],
+        data: Data.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
         "success": success,
+        "msg": msg,
+        "data": data.toJson(),
+      };
+}
+
+class Data {
+  int fee;
+  String kodeproduk;
+  List<IProduct> data;
+
+  Data({
+    required this.fee,
+    required this.kodeproduk,
+    required this.data,
+  });
+
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
+        fee: json["fee"],
+        kodeproduk: json["kodeproduk"],
+        data: List<IProduct>.from(json["data"].map((x) => IProduct.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "fee": fee,
+        "kodeproduk": kodeproduk,
         "data": List<dynamic>.from(data.map((x) => x.toJson())),
       };
 }
+
 
 class IProduct {
   String name;

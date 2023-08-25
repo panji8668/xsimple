@@ -8,10 +8,11 @@ import 'package:rxdart/rxdart.dart';
 import '../models/api_response.dart';
 
 class ISimpleBloc extends BaseBloc {
-  final service = ISimpleService();
+  final service = ISimpleService("");
   late String baseurl;
-  ISimpleBloc({required String burl}) {
+  ISimpleBloc({required String burl,required String xauthtoken}) {
     baseurl = burl;
+    service.authtoken=xauthtoken;
   }
   final _productController =
       BehaviorSubject<ApiResponse<IsimpleProductResponse>>();
@@ -21,10 +22,10 @@ class ISimpleBloc extends BaseBloc {
     _productController.sink.add(ApiResponse.init());
   }
 
-  getProduct() {
+  getProduct({required String typeproduk}) {
     _productController.sink.add(ApiResponse.loading('Loading'));
     service
-        .getIProducts(baseurl)
+        .getIProducts(baseurl, typeproduk)
         .then((value) =>
             _productController.sink.add(ApiResponse.completed(value)))
         .catchError((error) =>

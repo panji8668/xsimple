@@ -24,6 +24,7 @@ class ICodeTujuan {
 
 class ISimplePage extends StatefulWidget {
   final String baseurl;
+  final String authtoken;
   final int userid;
   final String title;
   final Function(ICodeTujuan) onSelect;
@@ -32,20 +33,21 @@ class ISimplePage extends StatefulWidget {
       required this.baseurl,
       required this.userid,
       required this.title,
-      required this.onSelect});
+      required this.onSelect, required this.authtoken});
 
   @override
   State<ISimplePage> createState() => _ISimplePageState();
 }
 
 class _ISimplePageState extends State<ISimplePage> {
-  final ISimpleBloc bloc = ISimpleBloc(burl: "");
+  final ISimpleBloc bloc = ISimpleBloc(burl: "",xauthtoken:"");
   final TextEditingController _txtnomor = TextEditingController(text: "");
-
+  String typeproduk="data";
   @override
   void initState() {
     super.initState();
     bloc.baseurl = widget.baseurl;
+    bloc.service.authtoken=widget.authtoken;
   }
 
   @override
@@ -64,7 +66,7 @@ class _ISimplePageState extends State<ISimplePage> {
         actions: [
           IconButton(
               onPressed: () {
-                bloc.getProduct();
+                bloc.getProduct(typeproduk: typeproduk);
               },
               icon: const Icon(Icons.refresh))
         ],
@@ -77,7 +79,7 @@ class _ISimplePageState extends State<ISimplePage> {
             child: TextField(
               textInputAction: TextInputAction.search,
               onSubmitted: (text){
-                bloc.getProduct();
+                bloc.getProduct(typeproduk: typeproduk);
               },
               style: const TextStyle(fontSize: 20),
               keyboardType: TextInputType.phone,
@@ -114,7 +116,7 @@ class _ISimplePageState extends State<ISimplePage> {
                       if (snapshot.data!.status == Status.ERROR) {
                         return ErrorPanel(
                             title: "Ops:${snapshot.data!.message!}",
-                            onclick: () => bloc.getProduct());
+                            onclick: () => bloc.getProduct(typeproduk: typeproduk));
                       }
                       if (snapshot.data!.status == Status.COMPLETED) {
                         return ListView.separated(
@@ -122,17 +124,18 @@ class _ISimplePageState extends State<ISimplePage> {
                                  Container(),
                             primary: false,
                             shrinkWrap: true,
-                            itemCount: snapshot.data!.data.data.length,
+                            itemCount: snapshot.data!.data.data.data.length,
                             itemBuilder: ((context, index) {
                               return PrductItem(
-                                  product: snapshot.data!.data.data[index],
+                                  product: snapshot.data!.data.data.data[index],
                                   ontap: (p0) => widget.onSelect(ICodeTujuan(
                                       tujuan: _txtnomor.text,
-                                      product: snapshot.data!.data.data[index],
+                                      product: snapshot.data!.data.data.data[index],
                                       code: snapshot
-                                          .data!.data.data[index].dnmcode,
+                                          .data!.data.data.data[index].dnmcode,
                                       price: snapshot
-                                          .data!.data.data[index].amount)));
+                                          .data!.data.data
+                                          .data[index].amount)));
                             }));
                       }
                     }
