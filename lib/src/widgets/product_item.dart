@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:isimple/src/helper/utils.dart';
 import 'package:isimple/src/models/isimpleproduct.dart';
 
 class PrductItem extends StatelessWidget {
   final IProduct product;
+  final int upprice;
   final Function(IProduct) ontap;
-  const PrductItem({super.key, required this.product, required this.ontap});
+  const PrductItem({super.key, required this.product, required this.ontap, required this.upprice});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,8 @@ class PrductItem extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  product.amount,
+                  formatAngka(
+                      int.parse(product.amount.replaceAll(",", "")) + upprice),
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.deepOrange),
                 ),
